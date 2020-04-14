@@ -1,15 +1,18 @@
+use std::sync::Arc;
+use std::sync::Mutex;
+
 struct Request {
     r: String,
 }
 
 struct Simple {
-    s: String,
+    s: Arc<Mutex<String>>,
 }
 
 impl Simple {
     fn new() -> Simple {
         Simple {
-            s: String::from("Hello"),
+            s: Arc::new(Mutex::new(String::from("Hello"))),
         }
     }
 
@@ -22,12 +25,14 @@ impl Simple {
         // https://stackoverflow.com/questions/53892938/rust-lifetime-issue-with-threads
 
         // I think Arc<Mutex<>> might be the answer, the function doesn't need the whole of Simpe, it just needs one of its fields.
-        another.closure_eater(|req| self.say_hello(req));
+        let s_clone = self.s.clone();
+        another.closure_eater(move |req| say_hello(s_clone, req));
     }
+}
 
-    fn say_hello(&self, req: Request) {
-        println!("Hello {} {}!", self.s, req.r);
-    }
+fn say_hello(s: Arc<Mutex<String>>, req: Request) {
+    let the_string = s.lock().unwrap();
+    println!("Hello {} {}!", the_string, req.r);
 }
 
 struct Another {}
@@ -40,7 +45,7 @@ impl Another {
     /// A random function that takes and immediately calls a closure
     fn closure_eater<F>(&self, fun: F)
     where
-        F: FnOnce(Request) + Send + 'static + Copy,
+        F: FnOnce(Request) + Send + 'static,
     {
         fun(Request {
             r: String::from("OK"),
