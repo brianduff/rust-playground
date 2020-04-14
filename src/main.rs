@@ -33,7 +33,7 @@ impl Another {
     /// A random function that takes and immediately calls a closure
     fn closure_eater<F>(&self, fun: F)
     where
-        F: Fn(Request),
+        F: FnOnce(Request) + Send + 'static + Copy,
     {
         fun(Request {
             r: String::from("OK"),
