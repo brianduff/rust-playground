@@ -2,10 +2,10 @@ use anyhow::Result;
 use std::sync::mpsc;
 use std::thread;
 
-pub enum Options<'a> {
+pub enum Options<> {
   First,
   Second,
-  Third(&'a str),
+  Third(String),
 }
 
 pub struct Output {
