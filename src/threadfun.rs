@@ -2,9 +2,10 @@ use anyhow::Result;
 use std::sync::mpsc;
 use std::thread;
 
-pub enum Options {
+pub enum Options<'a> {
   First,
   Second,
+  Third(&'a str),
 }
 
 pub struct Output {
