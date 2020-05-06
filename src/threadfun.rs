@@ -14,7 +14,7 @@ pub fn get_latest(options: &Options) -> Output {
   Output {}
 }
 
-fn background_thing(options: &Options) -> Result<Output> {
+fn background_thing(options: Options) -> Result<Output> {
   let (tx, rx) = mpsc::channel();
   let handle = thread::spawn(move || {
     let result = get_latest(&options);
