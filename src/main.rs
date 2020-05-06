@@ -1,6 +1,8 @@
 use std::sync::Arc;
 use std::sync::Mutex;
 
+mod threadfun;
+
 struct Request {
     r: String,
 }
