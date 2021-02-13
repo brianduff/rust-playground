@@ -1,5 +1,6 @@
 use std::sync::Arc;
 use std::sync::Mutex;
+use anyhow::{anyhow, Result};
 
 mod threadfun;
 
@@ -59,3 +60,5 @@ fn main() {
     let simple = Simple::new();
     simple.method();
 }
+
+

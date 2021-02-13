@@ -2,7 +2,20 @@ use anyhow::Result;
 use std::sync::mpsc;
 use std::thread;
 
-pub enum Options<> {
+pub struct Opt {
+  pub project: Option<String>
+}
+
+impl Opt {
+  pub fn options(&self) -> Options {
+    match self.project {
+      Some(ref p) => Options::Third(p.clone()),
+      None => Options::First
+    }
+  }
+}
+
+pub enum Options {
   First,
   Second,
   Third(String),
